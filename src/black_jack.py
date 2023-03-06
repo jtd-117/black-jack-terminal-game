@@ -120,3 +120,56 @@ class Deck(object):
                 self.all_cards = []
 
 # ---------------------------------------------------------------------------- #
+
+class Players(Deck.Card):
+        """
+        Defines the user as a player & the black jack dealer.
+        """
+
+        # Activitaes if dealer's face-up card is an ACE
+        insurance = None
+        
+        def __init__(self, bank = 1000):
+                """
+                Initialises the player/dealer.
+
+                :Parameters:
+                        - `bank`: the INITIAL betting balance of the player
+                """
+
+                self.hand = []
+                self.bank = bank
+                self.bet = None
+                self.card_sum = 0
+        
+        def add_card(self, Deck):
+                """
+                Adds a card to the player's/dealer's hands.
+                """
+                
+                # STEP 1: Need to add card to hand AND remove same card from deck
+                self.hand.append(Deck.all_cards[0])
+                Deck.all_cards.pop(0)
+                
+                # STEP 2: Need to update card sum
+                # CASE 2A: Card is 'Ace'
+                if self.hand[-1].rank == 'Ace':
+                        
+                        # CASE 2AI Value of 'Ace' is 1
+                        if self.card_sum + ACEVALUE2 > BLACKJACK:
+                                self.card_sum += ACEVALUE1
+
+                        # CASE 2AII: Value of 'Ace' is 11
+                        else:
+                                self.card_sum += ACEVALUE2
+                
+                # CASE 2B: Any other card
+                else:
+                        self.card_sum += self.hand[-1].value
+
+        def reset_hand(self):
+                """
+                Resets the hand of the player/dealer.
+                """
+                self.hand = []
+                self.card_sum = 0
