@@ -57,3 +57,29 @@ symbols = {
 
 stand_hit = ['s','h']
 yes_no = ['y','n']
+
+# ---------------------------------------------------------------------------- #
+
+class Card():
+        """
+        An INTERFACE for a card from a standard 52-card deck.
+        """
+
+        def __init__(self, suite, rank):
+                """
+                Initialises a standard playing card.
+
+                :Parameters:
+                        - `suite`: the TYPE of card taken from the `suites` dictionary
+                        - `rank`: the NUMBER of the card taken from the `ranks` dictionary
+                """
+                self.suite = suite
+                self.rank = rank
+                self.value = ranks[self.rank]
+                self.image = symbols[self.rank]
+
+        def __str__(self):
+                """
+                Prints out the rank & suite of the card.
+                """
+                return self.rank + ' of ' + self.suite
