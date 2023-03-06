@@ -121,7 +121,7 @@ class Deck(object):
 
 # ---------------------------------------------------------------------------- #
 
-class Players(Deck.Card):
+class Player(Deck.Card):
     """
     Defines the user as a player.
     """
@@ -177,7 +177,7 @@ class Players(Deck.Card):
 
 # ---------------------------------------------------------------------------- #
 
-class Dealers(Players):
+class Dealer(Player):
     """
     Defines a black-jack dealer.
     """
@@ -192,33 +192,33 @@ class Dealers(Players):
 
 # ---------------------------------------------------------------------------- #
 
-def place_bet(Players):
+def place_bet(player):
     """
     Player places betting amount.
 
     :Parameters:
-        - `Players`: the user to play the game
+        - `player`: an instance of the `Player` class
     """
 
     # STEP 1: Need to indicate round number and avaliable funds
     print(f"                                      DEAL\n" + BORDER)
-    print(f"\n--| Current balance: ${Players.bank} |--")
+    print(f"\n--| Current balance: ${player.bank} |--")
 
     # STEP 2: Need to ensure proper input of player bet
     while True:
         try:    
-            Players.bet = int(input("\nEnter betting amount: $"))
+            player.bet = int(input("\nEnter betting amount: $"))
         except:
             print(INVALID)
             continue
         else:   
             # CASE 2A: Player inputs funds exceeding balance
-            if (Players.bet > Players.bank):
+            if (player.bet > player.bank):
                 print("\nINSUFFICIENT FUNDS.")
                 continue
 
             # CASE 2B: Player inputs a zero or neagtive bet
-            elif (Players.bet <= 0):
+            elif (player.bet <= 0):
                 print("\nYOUR NOT THAT POOR!")
                 continue
 
@@ -228,4 +228,92 @@ def place_bet(Players):
                 break
     
     # STEP 3: Need to adjust player account balance
-    Players.bank -= Players.bet
+    player.bank -= player.bet
+
+# ---------------------------------------------------------------------------- #
+
+def display_table(player, dealer, turn):
+    """
+    Display the cards of the dealer & player.
+
+    :Parameters:
+        - `player`: an instance of the `Player` class
+        - `dealer`: an instance of the 'Dealer' class
+        - `turn`: a boolean where 'True' represents Player turn & 'False' for the dealer
+    """
+    
+    # STEP 1: Initialise the player & dealer cards
+    player_cards = ['' for i in range(10)]
+    dealer_cards = ['' for i in range(10)]
+    dealer_first_card = True
+
+    # STEP 2: Print the player's cards
+    for card in player.hand:
+        player_cards[0] += "┌─────────┐"
+        player_cards[1] += "| " + card.image + "      |"
+        for count in range(2,4):
+            player_cards[count] += "│         │"
+        player_cards[4] += "|    " + suites[card.suite] + "    |"
+        for count in range(5,7):
+            player_cards[count] += "│         │"
+        player_cards[7] += "|       " + card.image + "|"
+        player_cards[8] += "└─────────┘"
+
+    # CASE 3A: First card needs to be hidden
+    if (turn):
+
+        for card in dealer.hand:
+                
+            # STEP 3AI: Currently first card, need to censor
+            if (dealer_first_card):
+                dealer_cards[0] += "┌─────────┐"    
+
+                # STEP 3AII: Lines with indexes 1-7 share the same pattern
+                for count in range(1,8):
+                    dealer_cards[count] += "|░░░░░░░░░|"
+
+                dealer_cards[8] += "└─────────┘"       
+                dealer_first_card = False
+
+            # STEP 3AIII: Can openly record remaining cards
+            else:
+                dealer_cards[0] += "┌─────────┐"
+                dealer_cards[1] += "| " + card.image + "      |"
+                for count in range(2,4):
+                    dealer_cards[count] += "│         │"
+                dealer_cards[4] += "|    " + suites[card.suite] + "    |"
+                for count in range(5,7):
+                    dealer_cards[count] += "│         │"
+                dealer_cards[7] += "|       " + card.image + "|"
+                dealer_cards[8] += "└─────────┘"
+
+    # CASE 3B: Dealer's turn
+    else:
+        for card in dealer.hand:
+            dealer_cards[0] += "┌─────────┐"
+            dealer_cards[1] += "| " + card.image + "      |"
+            for count in range(2,4):
+                dealer_cards[count] += "│         │"
+            dealer_cards[4] += "|    " + suites[card.suite] + "    |"
+            for count in range(5,7):
+                dealer_cards[count] += "│         │"
+            dealer_cards[7] += "|       " + card.image + "|"
+            dealer_cards[8] += "└─────────┘"
+
+    # STEP 4: Display the dealer's cards
+    print("\n" + BORDER)
+    print(f"\n --| DEALER CARDS |--\n")
+    if (turn):
+        print("Dealer's card sum: ?\n")
+    else:
+        print(f"Dealer's card sum: {dealer.card_sum}\n")
+    for line in dealer_cards:
+        print(line)
+
+    # Step 5: Displaying player cards
+    print(f"\n --| PLAYER CARDS |--\n\nPlayer's card sum: {player.card_sum}\n")
+    for line in player_cards:
+        print(line)
+
+# ---------------------------------------------------------------------------- #
+
