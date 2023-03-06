@@ -60,42 +60,40 @@ yes_no = ['y','n']
 
 # ---------------------------------------------------------------------------- #
 
-class Card(object):
-        """
-        An INTERFACE for a card from a standard 52-card deck.
-        """
-
-        def __init__(self, suite, rank):
-                """
-                Initialises a standard playing card.
-
-                :Parameters:
-                        - `suite`: the TYPE of card taken from the `suites` dictionary
-                        - `rank`: the NUMBER of the card taken from the `ranks` dictionary
-                """
-                self.suite = suite
-                self.rank = rank
-                self.value = ranks[self.rank]
-                self.image = symbols[self.rank]
-
-        def __str__(self):
-                """
-                Prints out the rank & suite of the card.
-                """
-                return self.rank + ' of ' + self.suite
-
-# ---------------------------------------------------------------------------- #
-
 class Deck(object):
         """
         An INTERFACE for a standard 52-card deck.
         """
 
-        def __init__(self):
+        class Card(object):
                 """
-                Initialises a standard 52-card deck.
+                An INTERFACE for a card from a standard 52-card deck.
                 """
-                self.all_cards = []
+
+                def __init__(self, suite, rank):
+                        """
+                        Initialises a standard playing card.
+
+                        :Parameters:
+                                - `suite`: the TYPE of card taken from the `suites` dictionary
+                                - `rank`: the NUMBER of the card taken from the `ranks` dictionary
+                        """
+                        self.suite = suite
+                        self.rank = rank
+                        self.value = ranks[self.rank]
+                        self.image = symbols[self.rank]
+
+                def __str__(self):
+                        """
+                        Prints out the rank & suite of the card.
+                        """
+                        return self.rank + ' of ' + self.suite
+
+                def __init__(self):
+                        """
+                        Initialises a standard 52-card deck.
+                        """
+                        self.all_cards = []
                 
         def new_deck(self):
                 """
@@ -106,7 +104,7 @@ class Deck(object):
                 print("\nCreating new deck...")
                 for suite in suites.keys():
                         for rank in ranks.keys():
-                                self.all_cards.append(Card(suite, rank))
+                                self.all_cards.append(self.Card(suite, rank))
 
                 # STEP 2: Shuffle deck
                 print("\nShuffling deck...")
@@ -117,7 +115,7 @@ class Deck(object):
                 """
                 Deletes a deck of cards.
                 """
-                
+
                 print("\nResetting deck...")
                 self.all_cards = []
 
