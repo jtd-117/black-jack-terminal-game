@@ -1,0 +1,5 @@
+# @file     .gitignore
+# @author   Jude Thaddeau Data
+# @note     GitHub: https://github.com/jtd-117
+
+__pycache__
