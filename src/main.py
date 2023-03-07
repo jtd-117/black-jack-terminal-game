@@ -20,8 +20,8 @@ if __name__ == "__main__":
     play_black_jack = True
     round_count = 0
     deck = bj.Deck()
-    player = bj.Players()
-    dealer = bj.Dealers()
+    player = bj.Player()
+    dealer = bj.Dealer()
 
     # STEP 2: Provide a mechanism for replayability of multiple rounds
     while (play_black_jack):
@@ -30,8 +30,8 @@ if __name__ == "__main__":
         round_count += 1
         player_turn = None
         player_insurance = None
-        bj.deal_round(player)
-        player_turn = bj.prepare_round(deck, player, dealer, player_turn, round_count)
+        bj.place_bet(player)
+        player_turn = bj.prepare_round(deck, player, dealer, round_count)
         bj.display_table(player,dealer, player_turn)
 
         # STEP 4: If possible, check if the player wants INSURANCE
@@ -44,7 +44,7 @@ if __name__ == "__main__":
         while (player_turn):
 
             # STEP 6A: Allow player input & display board
-            player_turn = bj.player_turns(deck, player)
+            player_turn = bj.player_turn(deck, player)
             bj.display_table(player, dealer, player_turn)
 
         # STEP 7: Check if the player BUSTED
@@ -66,7 +66,7 @@ if __name__ == "__main__":
         while (not player_turn):
 
             # STEP 8A: Automate dealer decisions & display board
-            player_turn = bj.dealer_turns(deck, dealer)
+            player_turn = bj.dealer_turn(deck, dealer)
             bj.display_table(player, dealer, player_turn)
 
             # STEP 8B: Check if player decided to stay or ended up busting

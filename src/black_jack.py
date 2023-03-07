@@ -64,7 +64,7 @@ class Deck(object):
     """
     An INTERFACE for a standard 52-card deck.
     """
-
+    
     class Card(object):
         """
         An INTERFACE for a card from a standard 52-card deck.
@@ -89,11 +89,11 @@ class Deck(object):
             """
             return self.rank + ' of ' + self.suite
 
-        def __init__(self):
-            """
-            Initialises a standard 52-card deck.
-            """
-            self.all_cards = []
+    def __init__(self):
+        """
+        Initialises a standard 52-card deck.
+        """
+        self.all_cards = []
             
     def new_deck(self):
         """
@@ -142,14 +142,14 @@ class Player(Deck.Card):
         self.bet = None
         self.card_sum = 0
     
-    def add_card(self, Deck):
+    def add_card(self, deck):
         """
         Adds a card to the player's hands.
         """
         
         # STEP 1: Need to add card to hand AND remove same card from deck
-        self.hand.append(Deck.all_cards[0])
-        Deck.all_cards.pop(0)
+        self.hand.append(deck.all_cards[0])
+        deck.all_cards.pop(0)
         
         # STEP 2: Need to update card sum
         # CASE 2A: Card is 'Ace'
@@ -317,11 +317,12 @@ def display_table(player, dealer, turn):
 
 # ---------------------------------------------------------------------------- #
 
-def prepare_round(player, dealer, round_number):
+def prepare_round(deck, player, dealer, round_number):
     """
     Resets the deck, player & dealer hands, & provides new cards.
 
     :Parameters:
+        - 'deck': an instance of the `Deck` class
         - 'player': an instance of the `Player` class
         - 'dealer': an instance of the `Dealer` class
         - 'round_number': an integer of the current round of black jack
@@ -336,10 +337,10 @@ def prepare_round(player, dealer, round_number):
     print(f"                                    ROUND: {round_number}\n" + BORDER)
 
     # STEP 2: Check if deck length is long enough for next round
-    if len(Deck.all_cards) <= 26:
+    if len(deck.all_cards) <= 26:
         print("\nDECK INSUFFICIENT.")
-        Deck.delete_deck()
-        Deck.new_deck()
+        deck.delete_deck()
+        deck.new_deck()
     
     # STEP 3: Reset player & dealer hands
     print("\nResetting player hand...")
@@ -349,8 +350,8 @@ def prepare_round(player, dealer, round_number):
 
     # STEP 4: Assign player cards, dealer cards, & update the card sum
     while (len(player.hand) != 2) and (len(dealer.hand) != 2):
-        player.add_card(Deck)
-        dealer.add_card(Deck)
+        player.add_card(deck)
+        dealer.add_card(deck)
     print("\nDEALING CARDS...")
 
     # STEP 5: Check if the player has black jack as their inital hand
@@ -481,7 +482,7 @@ def double_down(deck, player, dealer, turn):
     
     # STEP 3: Supply another card & display board
     print("\nProviding player with another card...")
-    player.add_card(Deck)
+    player.add_card(deck)
     player.bank -= player.bet
     player.bet *= 2
     display_table(player, dealer, turn)
@@ -489,7 +490,7 @@ def double_down(deck, player, dealer, turn):
 
 # ---------------------------------------------------------------------------- #
 
-def player_turn(player):
+def player_turn(deck, player):
     """
     Allows the player to hit or stand & calculates if the player busts
 
@@ -528,7 +529,7 @@ def player_turn(player):
                 break
 
     # STEP 2: Assign random card
-    player.add_card(Deck)
+    player.add_card(deck)
 
     # STEP 3: Check if player busts
     if player.card_sum >= BLACKJACK:
