@@ -490,3 +490,52 @@ def double_down(deck, player, dealer, turn):
 
 # ---------------------------------------------------------------------------- #
 
+def player_turn(player):
+    """
+    Allows the player to hit or stand & calculates if the player busts
+
+    :Parameters:
+        - 'player': an instance of the `Player` class
+
+    :Return:
+        A boolean where:
+            - `True`: it is still the player's turn
+            - `False`: it is the dealer's turn
+    """
+
+    # STEP 1: Check if the player wants to HIT or STAND
+    print(BORDER + "\n                                   PLAYER TURN\n" + BORDER)
+    while True:
+        try:      
+            decision = input("\nWould you like to h)it or s)tand: ")
+
+        except:
+            print(INVALID)
+            continue
+
+        else:   
+
+            # CASE 1A: Player provides inappropriate response
+            if decision.lower() not in stand_hit:
+                print(INVALID)
+                continue
+
+            # CASE 1B: Player decides to stand
+            elif decision.lower() == stand_hit[0]:
+                return False
+            
+            # CASE 1C: Player decides to hit
+            else:   
+                break
+
+    # STEP 2: Assign random card
+    player.add_card(Deck)
+
+    # STEP 3: Check if player busts
+    if player.card_sum >= BLACKJACK:
+            return False
+    
+    # STEP 4: Indicate it is still the player's turn
+    return True
+
+# ---------------------------------------------------------------------------- #
