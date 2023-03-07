@@ -317,12 +317,11 @@ def display_table(player, dealer, turn):
 
 # ---------------------------------------------------------------------------- #
 
-def prepare_round(deck, player, dealer, round_number):
+def prepare_round(player, dealer, round_number):
     """
     Resets the deck, player & dealer hands, & provides new cards.
 
     :Parameters:
-        - 'deck': an instance of the `Deck` class
         - 'player': an instance of the `Player` class
         - 'dealer': an instance of the `Dealer` class
         - 'round_number': an integer of the current round of black jack
@@ -635,7 +634,7 @@ def new_round(player):
     # CASE 1B: Player gets to decide to play again
     print("                                 REPLAY REQUEST\n" + BORDER)
     print("\nFUNDS SUFFICIENT...")
-    
+
     while True:
         try:    
             decision = input("\nWould you like to play again? y)es or n)o: ")
