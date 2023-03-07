@@ -10,7 +10,7 @@ A python program that plays the [Black Jack](https://en.wikipedia.org/wiki/Black
 
 The player is pitted against an AUTOMATED dealer who is programmed (i.e. winning strategy) to accrue as many cards that sum greater than or equal to 17 before standing. The program terminates when the cannot (virtually) afford to play another round.
 
-<img src="assets/black-jack-demo.gif">
+<img src="assets/black-jack-demo.gif" width="400px" height="600px">
 
 This implementation of Black Jack has the following features:
 <table>
