@@ -578,7 +578,7 @@ def board_analysis(player, dealer, insurance):
     :Parameters:
         - 'player': an instance of the `Player` class
         - 'dealer': an instance of the `Dealer` class
-        - 'insurance':
+        - 'insurance': a boolean of whether insurance was payed for
     """
 
     # STEP 1: Indicate that the round has concluded
@@ -588,7 +588,7 @@ def board_analysis(player, dealer, insurance):
     # CASE 2A: Draw
     if (player.card_sum == dealer.card_sum):
 
-        # STEP 2AIL: Return EQUAL money
+        # STEP 2AI: Return EQUAL money
         print(f"PUSH!\n\n${player.bet} was returned to your account balance.")
         player.bank += player.bet
     
@@ -612,3 +612,51 @@ def board_analysis(player, dealer, insurance):
         print(f"YOU LOSE!\n\nYou lost ${player.bet} to the house.")
 
 # ---------------------------------------------------------------------------- #
+
+def new_round(player):
+    """
+    Allows player to decide is they want to play again.
+
+    :Parameters:
+        - `player`: an instance of the `Player` class
+
+    :Return:
+        A boolean where:
+            - `True`: The player wants to play again
+            - `False`: The player does NOT want to play again
+    """
+
+    # CASE 1A: Player has no more money (i.e. gamer over - terminate program)
+    print("\n" + BORDER)
+    if player.bank <= BROKE:
+        print("\nNO FUNDS AVAILIABLE. GET OUT OF THIS CASINO!")
+        return False
+
+    # CASE 1B: Player gets to decide to play again
+    print("                                 REPLAY REQUEST\n" + BORDER)
+    print("\nFUNDS SUFFICIENT...")
+    
+    while True:
+        try:    
+            decision = input("\nWould you like to play again? y)es or n)o: ")
+
+        except:
+            print(INVALID)
+            continue
+
+        else:
+            # CASE 1BI: Player provides inappropriate response
+            if decision.lower() not in yes_no:
+                print(INVALID)
+                continue
+
+            # CASE 1BII: Player decides to play another round
+            elif decision.lower() == yes_no[0]:
+                print("\nEXCELLENT... YOUR MONEY BELONGS TO THE CASINO!")
+                print("\n" + BORDER)
+                return True
+
+            # CASE 1BIII: Player decides to terminate program
+            else:   
+                print("\nCOME BACK SOON. THE CASINO NEEDS YOUR MONEY!")
+                return False
