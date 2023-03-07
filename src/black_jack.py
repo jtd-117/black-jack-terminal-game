@@ -425,3 +425,68 @@ def insurance(player, dealer):
 
 # ---------------------------------------------------------------------------- #
 
+def double_down(deck, player, dealer, turn):
+    """
+    Allows players to double inital bet after seeing inital cards.
+
+    :Parameters:
+        - 'deck': an instance of the `Deck` class
+        - 'player': an instance of the `Player` class
+        - 'dealer': an instance of the `Dealer` class
+        - 'turn': a boolean where 'True' represents Player turn & 'False' for the dealer
+
+    :Return:
+        A boolean value where:
+            - `True`: indicates the transaction was ACCEPTED
+            - `False`: indicates the transaction was DECLINED
+    """
+
+    # CASE 1A: Player has blackjack in initial hand (double-down redundant)
+    if (player.card_sum == BLACKJACK) and (len(player.hand) == 2):
+        return False
+
+    # CASE 1B: Player has insufficient funds to double down
+    elif (player.bank - player.bet < BROKE):
+        return True
+    
+    # STEP 2: Ensure player input is correct
+    print(BORDER)
+    print("                              OFFER - DOUBLE DOWN\n" + BORDER)
+    print(f"\n--| Current balance: ${player.bank} |--")
+    print(f"\nExtra 'double-down' cost: ${player.bet}.")
+    print("\nWould you like to 'double-down' on your bet?")
+
+    # STEP 3: Accept player input
+    while True:
+        try:    
+            decision = input("\ny)es or n)o: ")
+        except:
+            print(INVALID)
+            continue
+        else:   
+
+            # CASE 2A: player gives invalid input
+            if decision.lower() not in yes_no:
+                print(INVALID)
+                continue
+
+            # CASE 2B: Player says no
+            elif decision.lower() == yes_no[1]:
+                print("\nTRANSACTION DECLINED...\n")
+                return True
+                    
+            # CASE 2C: Player says yes
+            else:
+                print("\nTRANSACTION ACCEPTED...")
+                break
+    
+    # STEP 3: Supply another card & display board
+    print("\nProviding player with another card...")
+    player.add_card(Deck)
+    player.bank -= player.bet
+    player.bet *= 2
+    display_table(player, dealer, turn)
+    return False
+
+# ---------------------------------------------------------------------------- #
+
