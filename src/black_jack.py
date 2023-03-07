@@ -318,47 +318,110 @@ def display_table(player, dealer, turn):
 # ---------------------------------------------------------------------------- #
 
 def prepare_round(deck, player, dealer, round_number):
-        """
-        Resets the deck, player & dealer hands, & provides new cards.
+    """
+    Resets the deck, player & dealer hands, & provides new cards.
 
-        :Parameters:
-            - 'deck': an instance of the `Deck` class
-            - 'player': an instance of the `Player` class
-            - 'dealer': an instance of the `Dealer` class
-            - 'round_number': an integer of the current round of black jack
+    :Parameters:
+        - 'deck': an instance of the `Deck` class
+        - 'player': an instance of the `Player` class
+        - 'dealer': an instance of the `Dealer` class
+        - 'round_number': an integer of the current round of black jack
 
-        :Return:
-            A boolean where: 
-                - `True`: the player already has a black jack
-                - `False`: opposite of above (i.e. continue playing the game)
-        """
+    :Return:
+        A boolean where: 
+            - `True`: the player already has a black jack
+            - `False`: opposite of above (i.e. continue playing the game)
+    """
 
-        # STEP 1: Display the round number
-        print(f"                                    ROUND: {round_number}\n" + BORDER)
+    # STEP 1: Display the round number
+    print(f"                                    ROUND: {round_number}\n" + BORDER)
 
-        # STEP 2: Check if deck length is long enough for next round
-        if len(Deck.all_cards) <= 26:
-                print("\nDECK INSUFFICIENT.")
-                Deck.delete_deck()
-                Deck.new_deck()
-        
-        # STEP 3: Reset player & dealer hands
-        print("\nResetting player hand...")
-        player.reset_hand()
-        print("\nResetting dealer hand...")
-        dealer.reset_hand()
+    # STEP 2: Check if deck length is long enough for next round
+    if len(Deck.all_cards) <= 26:
+        print("\nDECK INSUFFICIENT.")
+        Deck.delete_deck()
+        Deck.new_deck()
+    
+    # STEP 3: Reset player & dealer hands
+    print("\nResetting player hand...")
+    player.reset_hand()
+    print("\nResetting dealer hand...")
+    dealer.reset_hand()
 
-        # STEP 4: Assign player cards, dealer cards, & update the card sum
-        while (len(player.hand) != 2) and (len(dealer.hand) != 2):
-                player.add_card(Deck)
-                dealer.add_card(Deck)
-        print("\nDEALING CARDS...")
+    # STEP 4: Assign player cards, dealer cards, & update the card sum
+    while (len(player.hand) != 2) and (len(dealer.hand) != 2):
+        player.add_card(Deck)
+        dealer.add_card(Deck)
+    print("\nDEALING CARDS...")
 
-        # STEP 5: Check if the player has black jack as their inital hand
-        if (player.card_sum == BLACKJACK) and (len(player.hand) == 2):
+    # STEP 5: Check if the player has black jack as their inital hand
+    if (player.card_sum == BLACKJACK) and (len(player.hand) == 2):
+        return False
+    else:
+        return True
+
+# ---------------------------------------------------------------------------- #
+
+def insurance(player, dealer):
+    """
+    Allows the player to place half of their intial bet as insurance 
+    against a potential black jack hand belonging to the dealer.
+
+    :Parameters:
+        - 'player': an instance of the `Player` class
+        - 'dealer': an instance of the `Dealer` class
+
+    :Return:
+        A boolean value where:
+            - `True`: indicates the transaction was ACCEPTED
+            - `False`: indicates the transaction was DECLINED
+    """
+
+    # STEP 1: Calculate player insurance amount
+    player.insurance = player.bet/2
+
+    # CASE 2A: Second card is NOT an 'Ace'
+    if (dealer.hand[-1].rank != 'Ace'):
+        return False
+
+    # CASE 2B: Player has black jack in inital hand (WORST CASE: PUSH)
+    elif (player.card_sum == BLACKJACK) and (len(player.hand) == 2):
+        return False
+
+    # CASE 2C: Player has insufficient funds to pay for insurance
+    elif (player.bank - player.insurance < BROKE):
+        return True
+    
+    # STEP 3: Offer insurance
+    print(BORDER)
+    print("                                OFFER - INSURANCE\n" + BORDER)
+    print(f"\n--| Current balance: ${player.bank} |--")
+    print(f"\nExtra 'insurance' cost: ${player.insurance}")
+    while True:
+        try:    
+            decision = input("\nWould you like to pay insurance? y)es or n)o: ")
+        except:
+            print(INVALID)
+            continue
+        else:   
+            # CASE 3A: Player provides inappropriate response
+            if decision not in yes_no:
+                print(INVALID)
+                continue
+
+            # CASE 3B: Player declines insurance offer
+            elif decision == yes_no[1]:
+                print("\nTRANSACTION DECLINED...\n")
                 return False
-        else:
-                return True
+
+            # CASE 3C: Player input is accepted
+            else:   
+                print("\nTRANSACTION ACCEPTED...\n")
+                break
+    
+    # STEP 4: Accept insurance transaction
+    player.bank -= player.insurance
+    return True
 
 # ---------------------------------------------------------------------------- #
 
