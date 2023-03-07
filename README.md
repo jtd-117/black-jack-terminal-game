@@ -20,20 +20,44 @@ This implementation of Black Jack has the following features:
     </thead>
     <tbody>
         <tr>
-            <td>Hitting & standing</td>
-            <td>Split</td>
-        </tr>
-        <tr>
-            <td>Doubling down</td>
-            <td>Surrender</td>
-        </tr>
-        <tr>
-            <td>Insurance</td>
-            <td>&nbsp</td>
+            <td>
+                <ul>
+                    <li>Hitting & standing</li>
+                    <li>Doubling down</li>
+                    <li>Insurance</li>
+                </ul>
+            </td>
+            <td>
+                <ul>
+                    <li>Splitting</li>
+                    <li>Surrendering</li>
+                </ul>
+            </td>
         </tr>
     </tbody>
 </table>
 
 # Installation:
+<table>
+    <thead>
+        <tr>
+            <th>OPTION 1 - Via Git Clone</th>
+            <th>OPTION 2 - Via ZIP</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td colspan=2>1. Click the `Code` button</td>
+        </tr>
+        <tr>
+            <td>2. Using either the `HTTPS` or `SSH` option, copy the link</td>
+            <td>2. Click on `Download ZIP`</td>
+        </tr>
+        <tr>
+            <td>3. Using your device's terminal emulator run `git clone &ltlink here&gt` in a desired directory</td>
+            <td>3. Unzip the download & move the folder in a desired directory</td>
+        </tr>
+    </tbody>
+</table>
 
 # Use:
