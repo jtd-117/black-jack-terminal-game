@@ -543,6 +543,10 @@ def player_turn(player):
 def dealer_turn(deck, dealer):
     """
     Automates dealer's hit or stand tactics.
+
+    :Parameters:
+        - 'deck': an instance of the `Deck` class
+        - 'dealer': an instance of the `Dealer` class
     """
 
     # STEP 1: Indicate it is the dealers turn
@@ -567,3 +571,44 @@ def dealer_turn(deck, dealer):
 
 # ---------------------------------------------------------------------------- #
 
+def board_analysis(player, dealer, insurance):
+    """
+    Checks whether the player or dealer won or drawed.
+
+    :Parameters:
+        - 'player': an instance of the `Player` class
+        - 'dealer': an instance of the `Dealer` class
+        - 'insurance':
+    """
+
+    # STEP 1: Indicate that the round has concluded
+    print(BORDER + "\n                                     OUTCOME")
+    print(BORDER + "\n")
+
+    # CASE 2A: Draw
+    if (player.card_sum == dealer.card_sum):
+
+        # STEP 2AIL: Return EQUAL money
+        print(f"PUSH!\n\n${player.bet} was returned to your account balance.")
+        player.bank += player.bet
+    
+    # CASE 2B: Player wins
+    elif (player.card_sum > dealer.card_sum):
+
+        # STEP 2BI: Return 2X money
+        player.bet *= 2
+        player.bank += player.bet
+        print(f"YOU WIN!\n\n${player.bet} was added to your balance.")
+
+    # CASE 2C: Dealer wins via black jack given insurance
+    elif (len(dealer.hand) == 2) and (dealer.card_sum == BLACKJACK) and insurance:
+
+        # STEP 2CI: Substitute inital bet with the insurance payment
+        player.bank += player.bet
+        print(f"YOU LOSE!\n\nYou lost ${player.insurance} to the house.")
+
+    # CASE 4: Dealer wins
+    else:
+        print(f"YOU LOSE!\n\nYou lost ${player.bet} to the house.")
+
+# ---------------------------------------------------------------------------- #
