@@ -39,6 +39,8 @@ This implementation of Black Jack has the following features:
     </tbody>
 </table>
 
+<img src="assets/supported-demo.gif" width="400px" height="600px">
+
 # Installation:
 <table>
     <thead>
