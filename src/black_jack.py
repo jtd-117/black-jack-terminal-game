@@ -539,3 +539,31 @@ def player_turn(player):
     return True
 
 # ---------------------------------------------------------------------------- #
+
+def dealer_turn(deck, dealer):
+    """
+    Automates dealer's hit or stand tactics.
+    """
+
+    # STEP 1: Indicate it is the dealers turn
+    print(BORDER + "\n                                 DEALER TURN\n" + BORDER)
+
+    # CASE 2A: Dealer Stands
+    if (RISKYBOUNDARY <= dealer.card_sum <= BLACKJACK):
+        print("\nDealer decision: STAND")
+        return None
+    
+    # CASE 2B: Dealer Hits
+    else:
+        print("\nDealer decision: HIT")
+        dealer.add_card(deck)
+    
+    # STEP 3: Check if dealers busts
+    if dealer.card_sum > BLACKJACK:
+        return None
+    
+    # STEP 4: Indicate it is still the dealer's turn
+    return False
+
+# ---------------------------------------------------------------------------- #
+
