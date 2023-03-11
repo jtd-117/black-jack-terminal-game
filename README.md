@@ -67,4 +67,4 @@ This implementation of Black Jack has the following features:
 # Use:
 1. Ensure `python3` is installed
 2. Using terminal `cd` (change directory) into the `black_jack_terminal_game` directory
-3. Execute the command: `python3 src/main.py`
+3. Execute the command: `python3 src`
